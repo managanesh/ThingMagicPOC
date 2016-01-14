@@ -1,8 +1,6 @@
 package com.veda.cache.config;
 
 import com.veda.cache.Tag;
-import com.veda.cache.TagReader;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
