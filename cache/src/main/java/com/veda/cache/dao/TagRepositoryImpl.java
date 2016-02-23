@@ -72,7 +72,6 @@ public class TagRepositoryImpl {
 		 String sql = "INSERT into ts_shelf_inv (Shelfdetid, Rfid, ItemStatus, Itemaddedby, Itemadddt, lastuser, lastupdttm, SentStatus)"
 				 +" select ?, ?, ?,?, ?, ?,?, ? from dual where NOT EXISTS (select Rfid from ts_shelf_inv where Rfid =? and ItemStatus ='Y')";
 		 System.out.println("SQL: "+sql);
-		 //jdbcTemplate.update("insert into ts_shelf_inv(Rfid) VALUES(?,'test1234');");
 		int i[]= jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 				
 				@Override

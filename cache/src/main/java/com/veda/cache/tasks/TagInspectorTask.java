@@ -94,6 +94,10 @@ private ShelfInv convertTagtoShelfInv(Tag tag,String status){
 	ShelfInv si = new ShelfInv();
 	si.setRfId(tag.getTagId()); 
 	si.setItemStatus(status);
+	si.setItemAddedBy("ADMIN");
+	si.setItemAddDate(new java.sql.Date(tag.getScanDate()));
+	si.setLastUser("ADMIN");
+	si.setLastUpdttm(new java.sql.Date(tag.getScanDate()));
 	return si;
 }
     private boolean updateDB(List<Tag> validTags, List<Tag> inValidTags){
@@ -106,7 +110,8 @@ private ShelfInv convertTagtoShelfInv(Tag tag,String status){
         boolean isValid = true;
 
         LocalDateTime scanDateTime = DateConvertUtils.asLocalDateTime(new Date(tag.getScanDate()));
-        System.out.println("Tag Scan Date: " + scanDateTime);
+        
+        System.out.println(tag.getTagId()+" :Tag Scan Date: " + scanDateTime);
 
         LocalDateTime now = LocalDateTime.now();
         System.out.println("Current Date: " + now);
