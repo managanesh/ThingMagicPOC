@@ -95,9 +95,9 @@ private ShelfInv convertTagtoShelfInv(Tag tag,String status){
 	si.setRfId(tag.getTagId()); 
 	si.setItemStatus(status);
 	si.setItemAddedBy("ADMIN");
-	si.setItemAddDate(new java.sql.Date(tag.getScanDate()));
+	si.setItemAddDate(new java.sql.Timestamp(tag.getScanDate()));
 	si.setLastUser("ADMIN");
-	si.setLastUpdttm(new java.sql.Date(tag.getScanDate()));
+	si.setLastUpdttm(new java.sql.Timestamp((new Date()).getTime()));
 	return si;
 }
     private boolean updateDB(List<Tag> validTags, List<Tag> inValidTags){

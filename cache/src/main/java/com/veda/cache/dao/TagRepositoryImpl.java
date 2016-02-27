@@ -39,7 +39,7 @@ public class TagRepositoryImpl {
 		}
 		
 		System.out.println("data to be inserted size: "+shelfInvs.size());
-		 String sql = "UPDATE ts_shelf_inv set ItemStatus='N' where Rfid=? and ItemStatus='Y'";
+		 String sql = "UPDATE ts_shelf_inv set ItemStatus='N' , lastupdttm=? where Rfid=? and ItemStatus='Y'";
 		 
 		 
 		 System.out.println("SQL: "+sql);
@@ -49,7 +49,8 @@ public class TagRepositoryImpl {
 				@Override
 				public void setValues(java.sql.PreparedStatement ps, int i) throws SQLException {
 					ShelfInv shelfInv = shelfInvs.get(i);
-					ps.setString(1, shelfInv.getRfId());
+					ps.setTimestamp(1, shelfInv.getLastUpdttm());
+					ps.setString(2, shelfInv.getRfId());
 				}
 						
 				@Override
@@ -69,8 +70,12 @@ public class TagRepositoryImpl {
 			return false;
 		}
 		System.out.println("data to be inserted size: "+shelfInvs.size());
-		 String sql = "INSERT into ts_shelf_inv (Shelfdetid, Rfid, ItemStatus, Itemaddedby, Itemadddt, lastuser, lastupdttm, SentStatus)"
-				 +" select ?, ?, ?,?, ?, ?,?, ? from dual where NOT EXISTS (select Rfid from ts_shelf_inv where Rfid =? and ItemStatus ='Y')";
+		 /*String sql = "INSERT into ts_shelf_inv (Shelfdetid, Rfid, ItemStatus, Itemaddedby, Itemadddt, lastuser, lastupdttm, SentStatus)"
+				 +" select ?, ?, ?,?, ?, ?,?, ? from dual where NOT EXISTS (select Rfid from ts_shelf_inv where Rfid =? and ItemStatus ='Y')";*/
+		String sql = "INSERT into ts_shelf_inv (Shelfdetid, Rfid, ItemStatus, Itemaddedby, Itemadddt, lastuser, lastupdttm, SentStatus)"
+				 +" values( ?, ?, ?,?, ?, ?,?, ? ) on duplicate key update ItemStatus='Y'";
+		 
+		 //on duplicate key update
 		 System.out.println("SQL: "+sql);
 		int i[]= jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
 				
@@ -81,11 +86,11 @@ public class TagRepositoryImpl {
 					ps.setString(2, shelfInv.getRfId());
 					ps.setString(3, shelfInv.getItemStatus());
 					ps.setString(4, shelfInv.getItemAddedBy());
-					ps.setDate(5, shelfInv.getItemAddDate());
+					ps.setTimestamp(5, shelfInv.getItemAddDate());
 					ps.setString(6, shelfInv.getLastUser());
-					ps.setDate(7, shelfInv.getLastUpdttm());
+					ps.setTimestamp(7, shelfInv.getLastUpdttm());
 					ps.setString(8, shelfInv.getSentStatus());
-					ps.setString(9, shelfInv.getRfId()); 
+					//ps.setString(9, shelfInv.getRfId()); 
 				
 				}
 						
